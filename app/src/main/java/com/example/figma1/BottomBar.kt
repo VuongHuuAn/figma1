@@ -38,11 +38,12 @@ fun BottomBar() {
 
         Box(modifier = Modifier.weight(1f)) {
             when (selectedIndex) {
-                0 -> HomeScreen()
+                 0 -> HomeScreen(onNavigateToHistory = { selectedIndex = 5 })
                 1 -> TokensScreen()
                 2 -> SwapScreen()
                 3 -> BrowserScreen()
                 4 -> AssetScreen()
+                5 -> HistoryScreen()
             }
         }
 

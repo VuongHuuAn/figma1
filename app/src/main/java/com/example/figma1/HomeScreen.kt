@@ -2,6 +2,7 @@ package com.example.figma1
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onNavigateToHistory: () -> Unit = {}) {
     val darkBlue = Color(0xFF002731 )
 
     Surface(
@@ -53,7 +54,7 @@ fun HomeScreen() {
         ) {
             item { TopBar() }
             item { WalletSection() }
-            item { ActionButtonsRow() }
+            item { ActionButtonsRow(onNavigateToHistory) }
             item { LearnBanner() }
             item { LearnSection() }
             item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -170,24 +171,25 @@ fun WalletSection() {
 }
 
 @Composable
-fun ActionButtonsRow() {
+fun ActionButtonsRow(onNavigateToHistory: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        ActionButton("Send", R.drawable.send)
-        ActionButton("Receive", R.drawable.receive)
-        ActionButton("Swap", R.drawable.change)
-        ActionButton("History", R.drawable.history)
+        ActionButton("Send", R.drawable.send, onClick = {})
+        ActionButton("Receive", R.drawable.receive, onClick = {})
+        ActionButton("Swap", R.drawable.change, onClick = {})
+        ActionButton("History", R.drawable.history, onClick = onNavigateToHistory)
     }
 }
 
 @Composable
-fun ActionButton(text: String, iconResId: Int) {
+fun ActionButton(text: String, iconResId: Int, onClick: () -> Unit) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable(onClick = onClick)
     ) {
         Box(
             modifier = Modifier
