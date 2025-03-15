@@ -72,17 +72,19 @@ fun HistoryScreen(
 // Tab Tokens & NFT
 data class TabItem(val title: String, val value: String)
 @Composable
-private fun TabSection(onChangeSelected: (Int)->Unit,selectedTab: Int) {
+fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
     val tabs = listOf<TabItem>(
         TabItem("Tokens", "tokens"),
         TabItem("NFT", "nft")
     )
-    Column {
+    Column(
+        modifier = Modifier.padding(bottom = 16.dp)
+    ) {
         // Tab headers
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-
+                .padding(vertical = 16.dp)
         ) {
             tabs.forEachIndexed { index, tab ->
                 Text(
@@ -90,9 +92,7 @@ private fun TabSection(onChangeSelected: (Int)->Unit,selectedTab: Int) {
                     fontSize = 16.sp,
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onChangeSelected(index) }
-                        .padding(bottom = 8.dp),
-
+                        .clickable { onChangeSelected(index) },
                     color = if (selectedTab == index) Color.Black else Color.Gray,
                     fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
                     textAlign = TextAlign.Center
@@ -119,20 +119,17 @@ private fun TabSection(onChangeSelected: (Int)->Unit,selectedTab: Int) {
 
 //NFT Content (FilterChip,NFT Transaction Item)
 @Composable
-private fun NFTContent() {
+fun NFTContent() {
     var selectedFilter by remember { mutableStateOf("") }
     
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        // Filter section
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             FilterChip(
                 text = "All Time",
@@ -146,13 +143,12 @@ private fun NFTContent() {
             )
         }
 
-        // NFT Transaction List
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 20.dp)
+            contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             item { NFTTransactionItem("Send", "Egao #22", "12 December 2024, 15:40", "SUCCESS") }
             item { NFTTransactionItem("Send", "Azuki #60", "12 December 2024, 15:40", "SUCCESS") }
@@ -161,7 +157,7 @@ private fun NFTContent() {
 }
 // UI NFT Transaction Item (NFT Screen)
 @Composable
-private fun NFTTransactionItem(
+fun NFTTransactionItem(
     type: String,
     nftName: String,
     date: String,
@@ -280,7 +276,7 @@ private fun NFTTransactionItem(
 }
 // UI History Top Bar Header
 @Composable
-private fun HistoryTopBar(
+fun HistoryTopBar(
     onBackClick: () -> Unit
 ) {
     Row(
@@ -313,27 +309,25 @@ private fun HistoryTopBar(
 
 // Tokens Content (FilterSection, TransactionList)
 @Composable
-private fun TokensContent() {
+fun TokensContent() {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        FilterSection() // Filter section cho Token
-        TransactionList() // Danh sách giao dịch
+        FilterSection()
+        TransactionList()
     }
 }
 
 // Filter Section của Tokens Screen
 @Composable
-private fun FilterSection() {
+fun FilterSection() {
     var selectedFilter by remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         FilterChip(
@@ -355,7 +349,7 @@ private fun FilterSection() {
 }
 // UI Filter Chip của Filter Section (Tokens Screen)
 @Composable
-private fun FilterChip(
+fun FilterChip(
     text: String,
     selected: Boolean = false,
     onSelected: () -> Unit
@@ -396,13 +390,13 @@ private fun FilterChip(
 }
 // Transaction List của Tokens Screen
 @Composable
-private fun TransactionList() {
+fun TransactionList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(vertical = 20.dp)
+        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item { TransactionItem("Swap", "SOL", "- ETH 0,00047", "SUCCESS", "12 December 2024, 15:40") }
         item { TransactionItem("Swap", "ETH", "- ETH 0,00047", "PENDING", "12 December 2024, 15:40") }
@@ -412,7 +406,7 @@ private fun TransactionList() {
 }
 // UI Transaction Item của Transaction List (Tokens Screen)
 @Composable
-private fun TransactionItem(
+fun TransactionItem(
     type: String,
     coin: String,
     amount: String,
