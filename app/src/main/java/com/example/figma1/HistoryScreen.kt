@@ -84,7 +84,7 @@ fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
+
         ) {
             tabs.forEachIndexed { index, tab ->
                 Text(
