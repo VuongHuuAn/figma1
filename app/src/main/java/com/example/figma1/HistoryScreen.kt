@@ -110,7 +110,7 @@ private fun TabSection(onChangeSelected: (Int)->Unit,selectedTab: Int) {
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
                     .height(2.dp)
-                    .background(Color(0xFF4CAF50))
+                    .background(Color(0xFFA5E983))
                     .align(if (selectedTab == 0) Alignment.CenterStart else Alignment.CenterEnd)
             )
         }
