@@ -80,7 +80,7 @@ fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
         TabItem("NFT", "nft")
     )
     Column(
-        modifier = Modifier.padding(bottom = 16.dp)
+        modifier = Modifier.padding(top = 16.dp)
     ) {
         // Tab headers
         Row(
@@ -96,7 +96,7 @@ fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
                         .weight(1f)
                         .clickable { onChangeSelected(index) },
                     color = if (selectedTab == index) Color.Black else Color.Gray,
-                    fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
+                    fontWeight = if (selectedTab == index) FontWeight(600) else FontWeight(500),
                     textAlign = TextAlign.Center
                 )
             }
@@ -131,7 +131,7 @@ fun NFTContent() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             FilterChip(
                 text = "All Time",
@@ -330,8 +330,8 @@ fun FilterSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(start = 20.dp, end = 31.dp, top = 20.dp, bottom = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         FilterChip(
