@@ -43,7 +43,11 @@ fun BottomBar() {
                 2 -> SwapScreen()
                 3 -> BrowserScreen()
                 4 -> AssetScreen()
-                5 -> HistoryScreen()
+                5 -> HistoryScreen(
+                    onBackClick = {
+                        selectedIndex = 0
+                    }
+                )
             }
         }
 
@@ -124,7 +128,10 @@ private fun BottomNavItem(
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
-            modifier = Modifier.size(21.dp)
+            modifier = Modifier.size(21.dp),
+            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                if (isSelected) Color.Black else Color.Gray
+            )
         )
         Text(
             text = label,
