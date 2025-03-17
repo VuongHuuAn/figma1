@@ -25,6 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,24 +43,26 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun HomeScreen(onNavigateToHistory: () -> Unit = {}) {
-    val darkBlue = Color(0xFF002731 )
+    val darkBlue = Color(0xFF002731)
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF002731)
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item { TopBar() }
-            item { WalletSection() }
-            item { ActionButtonsRow(onNavigateToHistory) }
-            item { LearnBanner() }
-            item { LearnSection() }
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+    Scaffold(
+        containerColor = darkBlue,
+        content = { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item { TopBar() }
+                item { WalletSection() }
+                item { ActionButtonsRow(onNavigateToHistory) }
+                item { LearnBanner() }
+                item { LearnSection() }
+
+            }
         }
-    }
+    )
 }
 
 @Composable
@@ -318,10 +321,4 @@ fun LearnItem(text: String, icon: Painter) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(text, fontSize = 11.sp, fontWeight = FontWeight.W700)
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    HomeScreen()
 }

@@ -11,12 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,90 +21,78 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-
-
-
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun BottomBar() {
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    val darkBlue = Color(0xFF002731 )
+fun MainScreen() {
+    val navController = rememberNavController()
+    val darkBlue = Color(0xFF002731)
 
-    Column {
+    val currentRoute = navController
+        .currentBackStackEntryAsState().value?.destination?.route
 
-        Box(modifier = Modifier.weight(1f)) {
-            when (selectedIndex) {
-                 0 -> HomeScreen(onNavigateToHistory = { selectedIndex = 5 })
-                1 -> TokensScreen()
-                2 -> SwapScreen()
-                3 -> BrowserScreen()
-                4 -> AssetScreen()
-                5 -> HistoryScreen(
-                    onBackClick = {
-                        selectedIndex = 0
-                    }
-                )
-            }
-        }
-
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(darkBlue),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Box(
+    Scaffold(
+        bottomBar = {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center
+                    .background(darkBlue),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White)
-                        .padding(vertical = 12.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    BottomNavItem(
-                        iconResId = R.drawable.home,
-                        label = "Home",
-                        isSelected = selectedIndex == 0,
-                        onClick = { selectedIndex = 0 }
-                    )
-                    BottomNavItem(
-                        iconResId = R.drawable.token,
-                        label = "Tokens",
-                        isSelected = selectedIndex == 1,
-                        onClick = { selectedIndex = 1 }
-                    )
-                    BottomNavItem(
-                        iconResId = R.drawable.swap,
-                        label = "Swap",
-                        isSelected = selectedIndex == 2,
-                        onClick = { selectedIndex = 2 }
-                    )
-                    BottomNavItem(
-                        iconResId = R.drawable.browser,
-                        label = "Browser",
-                        isSelected = selectedIndex == 3,
-                        onClick = { selectedIndex = 3 }
-                    )
-                    BottomNavItem(
-                        iconResId = R.drawable.asset,
-                        label = "Asset",
-                        isSelected = selectedIndex == 4,
-                        onClick = { selectedIndex = 4 }
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(Color.White)
+                            .padding(vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BottomNavItem(
+                            iconResId = R.drawable.home,
+                            label = "Home",
+                            isSelected = currentRoute == Screen.Home.route,
+                            onClick = { navController.navigate(Screen.Home.route) }
+                        )
+                        BottomNavItem(
+                            iconResId = R.drawable.token,
+                            label = "Tokens",
+                            isSelected = currentRoute == Screen.Tokens.route,
+                            onClick = { navController.navigate(Screen.Tokens.route) }
+                        )
+                        BottomNavItem(
+                            iconResId = R.drawable.swap,
+                            label = "Swap",
+                            isSelected = currentRoute == Screen.Swap.route,
+                            onClick = { navController.navigate(Screen.Swap.route) }
+                        )
+                        BottomNavItem(
+                            iconResId = R.drawable.browser,
+                            label = "Browser",
+                            isSelected = currentRoute == Screen.Browser.route,
+                            onClick = { navController.navigate(Screen.Browser.route) }
+                        )
+                        BottomNavItem(
+                            iconResId = R.drawable.asset,
+                            label = "Asset",
+                            isSelected = currentRoute == Screen.Asset.route,
+                            onClick = { navController.navigate(Screen.Asset.route) }
+                        )
+                    }
                 }
             }
-
-
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            AppNavigation(navController = navController)
         }
     }
 }
@@ -130,12 +115,12 @@ private fun BottomNavItem(
             contentDescription = label,
             modifier = Modifier.size(21.dp),
             colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
-                if (isSelected) Color.Black else Color.Gray
+                if (isSelected) Color.Black else Color(0xFF9AAAAF)
             )
         )
         Text(
             text = label,
-            color = if (isSelected) Color.Black else Color.Gray,
+            color = if (isSelected) Color(0xFF002731) else Color(0xFF9AAAAF),
             fontSize = 12.sp,
             modifier = Modifier.padding(top = 4.dp)
         )

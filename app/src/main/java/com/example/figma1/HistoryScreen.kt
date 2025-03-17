@@ -3,6 +3,7 @@ package com.example.figma1
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,21 +55,25 @@ fun HistoryScreen(
 ) {
     var selectedTab by remember { mutableStateOf(0) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        // Top Bar
-        HistoryTopBar(onBackClick = onBackClick)
+    Scaffold(
+        topBar = {
+            HistoryTopBar(onBackClick = onBackClick)
+        },
+        containerColor = Color.White
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            // Tabs
+            TabSection(selectedTab = selectedTab, onChangeSelected = { selectedTab = it })
 
-        // Tabs
-        TabSection(selectedTab=selectedTab, onChangeSelected = { selectedTab = it})
-
-        // Content based on selected tab
-        when (selectedTab) {
-            0 -> TokensContent()
-            1 -> NFTContent()
+            // Content based on selected tab
+            when (selectedTab) {
+                0 -> TokensContent()
+                1 -> NFTContent()
+            }
         }
     }
 }
@@ -94,8 +100,10 @@ fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
                     fontSize = 16.sp,
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onChangeSelected(index) },
-                    color = if (selectedTab == index) Color.Black else Color.Gray,
+                        .clickable { onChangeSelected(index) }
+                        .padding(horizontal = 69.dp,vertical = 12.dp),
+
+                    color = if (selectedTab == index) Color(0xFF002731) else Color(0xFF9AAAAF),
                     fontWeight = if (selectedTab == index) FontWeight(600) else FontWeight(500),
                     textAlign = TextAlign.Center
                 )
@@ -123,26 +131,32 @@ fun TabSection(onChangeSelected: (Int)->Unit, selectedTab: Int) {
 @Composable
 fun NFTContent() {
     var selectedFilter by remember { mutableStateOf("") }
-    
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
-            FilterChip(
-                text = "All Time",
-                selected = selectedFilter == "All Time",
-                onSelected = { selectedFilter = "All Time" }
-            )
-            FilterChip(
-                text = "All Type",
-                selected = selectedFilter == "All Type",
-                onSelected = { selectedFilter = "All Type" }
-            )
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FilterChip(
+                    text = "All Time",
+                    selected = selectedFilter == "All Time",
+                    onSelected = { selectedFilter = "All Time" }
+                )
+                FilterChip(
+                    text = "All Type",
+                    selected = selectedFilter == "All Type",
+                    onSelected = { selectedFilter = "All Type" }
+                )
+
+            }
         }
 
         LazyColumn(
@@ -154,6 +168,7 @@ fun NFTContent() {
         ) {
             item { NFTTransactionItem("Send", "Egao #22", "12 December 2024, 15:40", "SUCCESS") }
             item { NFTTransactionItem("Send", "Azuki #60", "12 December 2024, 15:40", "SUCCESS") }
+
         }
     }
 }
@@ -327,28 +342,35 @@ fun TokensContent() {
 fun FilterSection() {
     var selectedFilter by remember { mutableStateOf("") }
 
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 31.dp, top = 20.dp, bottom = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding( 20.dp)
     ) {
-        FilterChip(
-            text = "All Time",
-            selected = selectedFilter == "All Time",
-            onSelected = { selectedFilter = "All Time" }
-        )
-        FilterChip(
-            text = "All Assets",
-            selected = selectedFilter == "All Assets",
-            onSelected = { selectedFilter = "All Assets" }
-        )
-        FilterChip(
-            text = "All Type",
-            selected = selectedFilter == "All Type",
-            onSelected = { selectedFilter = "All Type" }
-        )
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FilterChip(
+                text = "All Time",
+                selected = selectedFilter == "All Time",
+                onSelected = { selectedFilter = "All Time" }
+            )
+            FilterChip(
+                text = "All Assets",
+                selected = selectedFilter == "All Assets",
+                onSelected = { selectedFilter = "All Assets" }
+            )
+            FilterChip(
+                text = "All Type",
+                selected = selectedFilter == "All Type",
+                onSelected = { selectedFilter = "All Type" }
+            )
+
+
+        }
     }
 }
 // UI Filter Chip của Filter Section (Tokens Screen)
@@ -406,6 +428,9 @@ fun TransactionList() {
         item { TransactionItem("Swap", "ETH", "- ETH 0,00047", "PENDING", "12 December 2024, 15:40") }
         item { TransactionItem("Send", "ETH", "- ETH 0,00029", "FAILED", "12 December 2024, 15:40") }
         item { TransactionItem("Receive", "BNB", "+ BNB 1,00234", "SUCCESS", "12 December 2024, 15:40") }
+
+
+
     }
 }
 // UI Transaction Item của Transaction List (Tokens Screen)
